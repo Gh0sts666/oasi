@@ -252,6 +252,9 @@ CMS Checking...
     opencartcmslog = f"http://{target}/index.php?route=account/login"
     PrestaShopen = f"http://{target}/en/login?back=my-account"
     PrestaShop = f"http://{target}/login?back=my-account"
+	laravel = f"http://{target}/vendor"
+	vBulletin = f"http://{target}/js/header-rollup-554.js"
+	
     reqwp = r.get(wpcms)
     reqjoomla = r.get(joomlacms)
     reqdrup = r.get(drupalcms)
@@ -260,6 +263,8 @@ CMS Checking...
     reqopencartlog = r.get(opencartcmslog)
     reqprestashopen = r.get(PrestaShopen)
     reqprestashop = r.get(PrestaShop)
+	reqlaravel = r.get(laravel)
+	reqbulletin = r.get(vBulletin)
 
     if reqwp.status_code == 200:
         print(Fore.GREEN + "[INFO]" + Fore.RESET +
@@ -300,6 +305,16 @@ CMS Checking...
               " Seems to be a PrestaShop CMS")
         print("Tested: " + str(PrestaShop) + "     " +
               ("(Status: " + str(reqprestashop.status_code)+")"))
+	elif reqlaravel.status_code == 200:
+		print(Fore.GREEN + "[INFO]" + Fore.RESET +
+			  " Seems to be a Laravel")
+		print("Tested: " + str(laravel) + "     " + 
+			  ("(Status: " + str(reqlaravel.status_code)+")"))
+	elif reqbulletin.status_code == 200:
+		print(Fore.GREEN + "[INFO]" + Fore.RESET +
+			  " Seems to be a vBulletin")
+		print("Tested: " + str(vBulletin) + "     " + 
+			  ("(Status: " + str(reqbulletin.status_code)+")"))
     else:
         print("Can't identify CMS")
         print("")
@@ -344,7 +359,20 @@ DNS Lookup
 -----------
     """)
     count = 1
-
+	head = {"apikey":"JlHyf0tXsMiCLwSRS1fOHt1ZNOETqoaQ"}
+	try:
+		borders = []
+		targeturl = f"https://api.apilayer.com/dns_lookup/api/a/{target}"
+		for line in r.get(targeturl, headers=head):
+			newurl = str(line)
+			print(newurl)
+			count += 1
+		print(f"\n\nFound: {count} Results!")
+	except KeyboardInterrupt:
+        print("\n Exiting Dns Lookup...")
+        pass
+        time.sleep(1)
+	"""
     urlsweb = []
     try:
         borders = []
@@ -359,6 +387,7 @@ DNS Lookup
         print("\n Exiting Dns Lookup...")
         pass
         time.sleep(1)
+	"""
 
 
 def reverseip():
